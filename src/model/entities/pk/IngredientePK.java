@@ -24,6 +24,8 @@ public class IngredientePK implements Serializable {
 	public void setReceita(Receita receita) {
 		this.receita = receita;
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -53,5 +55,5 @@ public class IngredientePK implements Serializable {
 			return false;
 		return true;
 	}
-
+	
 }

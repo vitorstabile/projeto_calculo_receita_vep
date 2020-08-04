@@ -6,84 +6,72 @@ import model.entities.pk.IngredientePK;
 
 public class Ingrediente implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private IngredientePK id_MP_Receita;
-	
+
+	private IngredientePK id_MP_Receita = new IngredientePK();;
+
 	private Double custoMP;
 	private Double qtIngrediente;
 	private Double custoIngrediente;
 	private Double porcenIngrediente;
-	
-	
+
 	public Ingrediente() {
 	}
 
-	
-	public Ingrediente(MP mp, Receita receita, Double qtIngrediente) {
+	public Ingrediente(MP mp, Receita receita, Double custoMP, Double qtIngrediente) {
 		id_MP_Receita.setMp(mp);
 		id_MP_Receita.setReceita(receita);
-		this.qtIngrediente = qtIngrediente;
-		this.custoIngrediente = null;
+		this.custoMP = mp.getCustoMP();
+		this.custoIngrediente = mp.getCustoMP() * qtIngrediente;
 		this.porcenIngrediente = null;
 	}
-	
+
 	public MP getMP() {
 		return id_MP_Receita.getMp();
 	}
-	
+
 	public void setMP(MP mp) {
 		id_MP_Receita.setMp(mp);
 	}
-	
+
 	public Receita getReceita() {
 		return id_MP_Receita.getReceita();
 	}
-	
+
 	public void setReceita(Receita receita) {
 		id_MP_Receita.setReceita(receita);
 	}
-
 
 	public Double getCustoMP() {
 		return custoMP;
 	}
 
-
 	public void setCustoMP(Double custoMP) {
 		this.custoMP = custoMP;
 	}
-
 
 	public Double getQtIngrediente() {
 		return qtIngrediente;
 	}
 
-
 	public void setQtIngrediente(Double qtIngrediente) {
 		this.qtIngrediente = qtIngrediente;
 	}
-
-	
 
 	public Double getCustoIngrediente() {
 		return custoIngrediente;
 	}
 
-
 	public void setCustoIngrediente(Double custoIngrediente) {
 		this.custoIngrediente = custoIngrediente;
 	}
-
 
 	public Double getPorcenIngrediente() {
 		return porcenIngrediente;
 	}
 
-
 	public void setPorcenIngrediente(Double porcenIngrediente) {
 		this.porcenIngrediente = porcenIngrediente;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -92,7 +80,6 @@ public class Ingrediente implements Serializable {
 		result = prime * result + ((id_MP_Receita == null) ? 0 : id_MP_Receita.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -111,8 +98,11 @@ public class Ingrediente implements Serializable {
 		return true;
 	}
 
-	
-	
-	
+	@Override
+	public String toString() {
+		return "Ingrediente [id_MP_Receita=" + id_MP_Receita + ", custoMP=" + custoMP + ", qtIngrediente="
+				+ qtIngrediente + ", custoIngrediente=" + custoIngrediente + ", porcenIngrediente=" + porcenIngrediente
+				+ "]";
+	}
 
 }
