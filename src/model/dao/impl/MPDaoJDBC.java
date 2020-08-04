@@ -42,7 +42,7 @@ private Connection conn;
 			rs = st.executeQuery();
 			if(rs.next()) {
 				MP mp = new MP();
-				mp.setId(rs.getInt("id"));
+				mp.setId(rs.getInt("idMP"));
 				mp.setCodigoMP(rs.getString("codigoMP"));
 				mp.setDescricaoMP(rs.getString("descricaoMP"));
 				mp.setCustoMP(rs.getDouble("custoMP"));

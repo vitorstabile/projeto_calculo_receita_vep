@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class MP implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;
+	private Integer idMP;
 	private String codigoMP;
 	private String descricaoMP;
 	private Double custoMP;
@@ -15,8 +15,8 @@ public class MP implements Serializable {
 	}
 
 
-	public MP(Integer id, String codigoMP, String descricaoMP, Double custoMP) {
-		this.id = id;
+	public MP(Integer idMP, String codigoMP, String descricaoMP, Double custoMP) {
+		this.idMP = idMP;
 		this.codigoMP = codigoMP;
 		this.descricaoMP = descricaoMP;
 		this.custoMP = custoMP;
@@ -24,12 +24,12 @@ public class MP implements Serializable {
 
 
 	public Integer getId() {
-		return id;
+		return idMP;
 	}
 
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setId(Integer idMP) {
+		this.idMP = idMP;
 	}
 
 
@@ -67,7 +67,7 @@ public class MP implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((idMP == null) ? 0 : idMP.hashCode());
 		return result;
 	}
 
@@ -81,10 +81,10 @@ public class MP implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MP other = (MP) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (idMP == null) {
+			if (other.idMP != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!idMP.equals(other.idMP))
 			return false;
 		return true;
 	}
@@ -92,8 +92,12 @@ public class MP implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MP [id=" + id + ", codigoMP=" + codigoMP + ", descricaoMP=" + descricaoMP + ", custoMP=" + custoMP + "]";
+		return "MP [idMP=" + idMP + ", codigoMP=" + codigoMP + ", descricaoMP=" + descricaoMP + ", custoMP=" + custoMP
+				+ "]";
 	}
+
+
+	
 	
 	
 }
