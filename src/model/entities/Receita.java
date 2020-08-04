@@ -1,6 +1,8 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Receita implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -13,6 +15,8 @@ public class Receita implements Serializable {
 	private Double perdaReceita;
 	private Double custoReceita;
 	
+	private List<Ingrediente> ingrediente = new ArrayList<>();
+	
 	
 	public Receita() {
 	}
@@ -23,6 +27,9 @@ public class Receita implements Serializable {
 		this.descricaoReceita = descricaoReceita;
 		this.rendLiqReceita = rendLiqReceita;
 		this.gramaturaReceita = gramaturaReceita;
+		this.rendBrutoReceita = null;
+		this.perdaReceita = null;
+		this.custoReceita = null;
 	}
 
 
@@ -71,30 +78,22 @@ public class Receita implements Serializable {
 	}
 
 
-	public void setRendBrutoReceita(Double rendBrutoReceita) {
-		this.rendBrutoReceita = rendBrutoReceita;
-	}
-
-
 	public Double getPerdaReceita() {
 		return perdaReceita;
-	}
-
-
-	public void setPerdaReceita(Double perdaReceita) {
-		this.perdaReceita = perdaReceita;
 	}
 
 
 	public Double getCustoReceita() {
 		return custoReceita;
 	}
-
-
-	public void setCustoReceita(Double custoReceita) {
-		this.custoReceita = custoReceita;
+	
+	public void addIngrediente(Ingrediente ingrediente) {
+		this.ingrediente.add(ingrediente);
 	}
-
+	
+	public void removeIngrediente(Ingrediente ingrediente) {
+		this.ingrediente.remove(ingrediente);
+	}
 
 	@Override
 	public int hashCode() {
@@ -127,9 +126,9 @@ public class Receita implements Serializable {
 	public String toString() {
 		return "Receita [idReceita=" + idReceita + ", descricaoReceita=" + descricaoReceita + ", rendLiqReceita="
 				+ rendLiqReceita + ", gramaturaReceita=" + gramaturaReceita + ", rendBrutoReceita=" + rendBrutoReceita
-				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + "]";
+				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + ", ingrediente=" + ingrediente
+				+ "]";
 	}
-	
 	
 	
 	

@@ -35,5 +35,7 @@ public class Main extends Application {
 		System.out.println(mp1);
 		System.out.println(mp2);
 		System.out.println(mp3);
+		
+		
 	}
 }
