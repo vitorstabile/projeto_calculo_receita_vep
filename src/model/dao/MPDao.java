@@ -8,6 +8,7 @@ public interface MPDao {
 
 	void insert(MP obj);
 	void update(MP obj);
+	void deleteById(Integer idMP);
 	MP findByCodigo(String codigoMP);
 	List<MP> findAll();
 	

@@ -30,6 +30,12 @@ private Connection conn;
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void deleteById(Integer idMP) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public MP findByCodigo(String codigoMP) {
