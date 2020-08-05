@@ -21,6 +21,7 @@ public class Ingrediente implements Serializable {
 		id_MP_Receita.setMp(mp);
 		id_MP_Receita.setReceita(receita);
 		this.custoMP = mp.getCustoMP();
+		this.qtIngrediente = qtIngrediente;
 		this.custoIngrediente = mp.getCustoMP() * qtIngrediente;
 		this.porcenIngrediente = null;
 	}

@@ -48,10 +48,6 @@ public class Main extends Application {
 		Receita receita2 = new Receita(2, "Recheio de Carne", 10.0, 3.0);
 		Receita receita3 = new Receita(3, "Empano de Farinha", 5.0, 2.0);
 		
-		System.out.println(receita1);
-		System.out.println(receita2);
-		System.out.println(receita3);
-		
 		Ingrediente ingrediente1 = new Ingrediente(mp1, receita1, mp1.getCustoMP(), 15.0);
 		Ingrediente ingrediente2 = new Ingrediente(mp2, receita1, mp2.getCustoMP(), 20.0);
 		Ingrediente ingrediente3 = new Ingrediente(mp2, receita2, mp2.getCustoMP(), 8.0);
@@ -59,12 +55,27 @@ public class Main extends Application {
 		Ingrediente ingrediente5 = new Ingrediente(mp5, receita3, mp5.getCustoMP(), 2.5);
 		Ingrediente ingrediente6 = new Ingrediente(mp6, receita3, mp6.getCustoMP(), 2.5);
 		
-		System.out.println(ingrediente1);
-		System.out.println(ingrediente2);
-		System.out.println(ingrediente3);
-		System.out.println(ingrediente4);
-		System.out.println(ingrediente5);
-		System.out.println(ingrediente6);
+		receita1.addIngrediente(ingrediente1);
+		receita1.addIngrediente(ingrediente2);
+		
+		receita2.addIngrediente(ingrediente3);
+		receita2.addIngrediente(ingrediente4);
+		
+		receita3.addIngrediente(ingrediente5);
+		receita3.addIngrediente(ingrediente6);
+		
+		System.out.println(receita1);
+		System.out.println(receita2);
+		System.out.println(receita3);
+		
+		Ingrediente ingrediente7 = new Ingrediente(mp4, receita2, mp4.getCustoMP(), 2.5);
+		Ingrediente ingrediente8 = new Ingrediente(mp3, receita1, mp3.getCustoMP(), 3.0);
+		
+		receita2.addIngrediente(ingrediente7);
+		receita1.addIngrediente(ingrediente8);
+		
+		System.out.println(receita1);
+		System.out.println(receita2);
 		
 	}
 }

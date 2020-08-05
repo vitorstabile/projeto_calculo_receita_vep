@@ -14,13 +14,11 @@ public class Receita implements Serializable {
 	private Double rendBrutoReceita;
 	private Double perdaReceita;
 	private Double custoReceita;
-	
-	private List<Ingrediente> ingrediente = new ArrayList<>();
-	
-	
+
+	private List<Ingrediente> ingredientes = new ArrayList<>();
+
 	public Receita() {
 	}
-
 
 	public Receita(Integer idReceita, String descricaoReceita, Double rendLiqReceita, Double gramaturaReceita) {
 		this.idReceita = idReceita;
@@ -32,67 +30,94 @@ public class Receita implements Serializable {
 		this.custoReceita = null;
 	}
 
-
 	public Integer getIdReceita() {
 		return idReceita;
 	}
-
 
 	public void setIdReceita(Integer idReceita) {
 		this.idReceita = idReceita;
 	}
 
-
 	public String getDescricaoReceita() {
 		return descricaoReceita;
 	}
-
 
 	public void setDescricaoReceita(String descricaoReceita) {
 		this.descricaoReceita = descricaoReceita;
 	}
 
-
 	public Double getRendLiqReceita() {
 		return rendLiqReceita;
 	}
-
 
 	public void setRendLiqReceita(Double rendLiqReceita) {
 		this.rendLiqReceita = rendLiqReceita;
 	}
 
-
 	public Double getGramaturaReceita() {
 		return gramaturaReceita;
 	}
-
 
 	public void setGramaturaReceita(Double gramaturaReceita) {
 		this.gramaturaReceita = gramaturaReceita;
 	}
 
-
 	public Double getRendBrutoReceita() {
 		return rendBrutoReceita;
 	}
-
 
 	public Double getPerdaReceita() {
 		return perdaReceita;
 	}
 
-
 	public Double getCustoReceita() {
 		return custoReceita;
 	}
-	
+
 	public void addIngrediente(Ingrediente ingrediente) {
-		this.ingrediente.add(ingrediente);
+		this.ingredientes.add(ingrediente);
+		setRendBrutoReceita();
+		setPerdaReceita();
+		setCustoReceita();
+		setPorcenIngrediente();
 	}
-	
+
 	public void removeIngrediente(Ingrediente ingrediente) {
-		this.ingrediente.remove(ingrediente);
+		this.ingredientes.remove(ingrediente);
+		setRendBrutoReceita();
+		setPerdaReceita();
+		setCustoReceita();
+		setPorcenIngrediente();
+	}
+
+	public void setRendBrutoReceita() {
+
+		double soma = 0;
+
+		for (Ingrediente ingrediente : ingredientes) {
+			soma = soma + ingrediente.getQtIngrediente();
+		}
+		this.rendBrutoReceita = soma;
+	}
+
+	public void setPerdaReceita() {
+		this.perdaReceita = ((this.rendBrutoReceita - this.rendLiqReceita) / (this.rendBrutoReceita)) * 100;
+	}
+
+	public void setCustoReceita() {
+		double soma = 0;
+
+		for (Ingrediente ingrediente : ingredientes) {
+			soma = soma + ingrediente.getCustoIngrediente();
+		}
+		this.custoReceita = soma / this.rendLiqReceita;
+	}
+
+	public void setPorcenIngrediente() {
+
+		for (Ingrediente ingrediente : ingredientes) {
+			ingrediente.setPorcenIngrediente((ingrediente.getQtIngrediente()/this.rendBrutoReceita)*100);
+		}
 	}
 
 	@Override
@@ -102,7 +127,6 @@ public class Receita implements Serializable {
 		result = prime * result + ((idReceita == null) ? 0 : idReceita.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -121,15 +145,12 @@ public class Receita implements Serializable {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Receita [idReceita=" + idReceita + ", descricaoReceita=" + descricaoReceita + ", rendLiqReceita="
 				+ rendLiqReceita + ", gramaturaReceita=" + gramaturaReceita + ", rendBrutoReceita=" + rendBrutoReceita
-				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + ", ingrediente=" + ingrediente
+				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + ", ingrediente=" + ingredientes
 				+ "]";
 	}
-	
-	
-	
+
 }
