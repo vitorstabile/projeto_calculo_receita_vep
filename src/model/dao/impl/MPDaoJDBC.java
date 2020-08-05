@@ -62,7 +62,20 @@ public class MPDaoJDBC implements MPDao {
 
 	@Override
 	public void deleteById(Integer idMP) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM calculo_receita.mp WHERE idMP = ?");
+			
+			st.setInt(1, idMP);
+			
+			st.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 
 	}
 

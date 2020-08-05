@@ -27,12 +27,9 @@ public class Main extends Application {
 		/* Implementar primeiro o banco */
 
 		MPDao mpDao = DaoFactory.createMPDao();
-
-		MP mp7 = new MP (null, "111111", "teste", 25.5);
 		
-		mpDao.insert(mp7);
-		
-		System.out.println(mp7.getId());
+		mpDao.deleteById(151);
+		mpDao.deleteById(152);
 		
 	}
 }
