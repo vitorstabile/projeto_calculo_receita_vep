@@ -41,11 +41,33 @@ public class MPDaoJDBC implements MPDao {
 					obj.setId(id);
 				}
 				DB.closeResultSet(rs);
-			} 
-			else {
+			} else {
 				throw new DbException("Unexpected error! No rows affected!");
 			}
-		} 
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+	}
+
+	@Override
+	public void update(MP obj) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE calculo_receita.mp " 
+					+ "SET "
+					+ "codigoMP = ?, descricaoMP=?, custoMP=? " 
+					+ "WHERE idMP = ?");
+
+			st.setString(1, obj.getCodigoMP());
+			st.setString(2, obj.getDescricaoMP());
+			st.setDouble(3, obj.getCustoMP());
+			st.setInt(4, obj.getId());
+
+			st.executeUpdate();
+		}
+
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} 
@@ -55,25 +77,17 @@ public class MPDaoJDBC implements MPDao {
 	}
 
 	@Override
-	public void update(MP obj) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void deleteById(Integer idMP) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("DELETE FROM calculo_receita.mp WHERE idMP = ?");
-			
+
 			st.setInt(1, idMP);
-			
+
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 

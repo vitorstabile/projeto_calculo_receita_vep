@@ -28,8 +28,18 @@ public class Main extends Application {
 
 		MPDao mpDao = DaoFactory.createMPDao();
 		
-		mpDao.deleteById(151);
-		mpDao.deleteById(152);
+		MP mp10 = new MP (null, "123456", "teste", 25.5);
+		
+		mpDao.insert(mp10);
+		
+		MP mp11 = new MP();
+		
+		mp11 = mpDao.findByCodigo("123456");
+		
+		mp11.setDescricaoMP("OutroTeste");
+		mp11.setCustoMP(30.0);
+		
+		mpDao.update(mp11);
 		
 	}
 }
