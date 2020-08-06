@@ -67,9 +67,7 @@ public class Main extends Application {
 		receita3.addIngrediente(ingrediente5);
 		receita3.addIngrediente(ingrediente6);
 		
-		receitaDao.insert(receita1);
-		receitaDao.insert(receita2);
-		receitaDao.insert(receita3);
+		receitaDao.deleteById(2);
 		
 	}
 }

@@ -62,7 +62,18 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 
 	@Override
 	public void deleteById(Integer idReceita) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM calculo_receita.receita WHERE idReceita = ?");
+
+			st.setInt(1, idReceita);
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
