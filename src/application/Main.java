@@ -6,6 +6,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.dao.DaoFactory;
 import model.dao.MPDao;
+import model.dao.ReceitaDao;
 import model.entities.Ingrediente;
 import model.entities.MP;
 import model.entities.Receita;
@@ -29,6 +30,8 @@ public class Main extends Application {
 		/* Implementar primeiro o banco */
 
 		MPDao mpDao = DaoFactory.createMPDao();
+		
+		ReceitaDao receitaDao = DaoFactory.createReceitaDao();
 		
 		MP mp1 = mpDao.findByCodigo("800001");
 		MP mp2 = mpDao.findByCodigo("800005");
@@ -63,22 +66,10 @@ public class Main extends Application {
 
 		receita3.addIngrediente(ingrediente5);
 		receita3.addIngrediente(ingrediente6);
-
-		System.out.println(receita1);
-		System.out.println(receita2);
-		System.out.println(receita3);
-
-		Ingrediente ingrediente7 = new Ingrediente(mp4, receita2, mp4.getCustoMP(), 2.5);
-		Ingrediente ingrediente8 = new Ingrediente(mp3, receita1, mp3.getCustoMP(), 3.0);
-
-		receita2.addIngrediente(ingrediente7);
-		receita1.addIngrediente(ingrediente8);
-
-		System.out.println(receita1);
-		System.out.println(receita2);
 		
-		System.out.println(ingrediente2.getMP().getId());
-		System.out.println(ingrediente2.getReceita().getIdReceita());
+		receitaDao.insert(receita1);
+		receitaDao.insert(receita2);
+		receitaDao.insert(receita3);
 		
 	}
 }

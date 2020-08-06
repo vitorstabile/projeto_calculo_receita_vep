@@ -1,11 +1,19 @@
 package model.dao.impl;
 
+import java.sql.Connection;
 import java.util.List;
 
 import model.dao.IngredienteDao;
 import model.entities.Ingrediente;
 
 public class IngredienteDaoJDBC implements IngredienteDao {
+	
+	
+	private Connection conn;
+	
+	public IngredienteDaoJDBC(Connection conn) {
+		this.conn = conn;
+	}
 
 	@Override
 	public void insert(Ingrediente obj) {

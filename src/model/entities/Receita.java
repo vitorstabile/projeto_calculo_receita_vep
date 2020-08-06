@@ -151,6 +151,6 @@ public class Receita implements Serializable {
 				+ rendLiqReceita + ", gramaturaReceita=" + gramaturaReceita + ", rendBrutoReceita=" + rendBrutoReceita
 				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + ", ingrediente=" + ingredientes
 				+ "]";
-	}
+	} 
 
 }
