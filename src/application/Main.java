@@ -67,9 +67,9 @@ public class Main extends Application {
 		receita3.addIngrediente(ingrediente5);
 		receita3.addIngrediente(ingrediente6);
 		
-		Receita receita4 = receitaDao.findById(1);
+		receita1.setDescricaoReceita("Massa de Mandioca");
 		
-		System.out.println(receita4);
+		receitaDao.update(receita1);
 		
 	}
 }

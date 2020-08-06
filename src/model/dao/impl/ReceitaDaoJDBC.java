@@ -56,7 +56,31 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 
 	@Override
 	public void update(Receita obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE calculo_receita.receita " 
+					+ "SET "
+					+ "descricaoReceita = ?, rendLiqReceita=?, gramaturaReceita=? " 
+					+ "WHERE idReceita = ?");
+
+			st.setString(1, obj.getDescricaoReceita());
+			st.setDouble(2, obj.getRendLiqReceita());
+			st.setDouble(3, obj.getGramaturaReceita());
+			st.setInt(4, obj.getIdReceita());
+			obj.setRendBrutoReceita();
+			obj.setPerdaReceita();
+			obj.setCustoReceita();
+			obj.setPorcenIngrediente();
+
+			st.executeUpdate();
+		}
+
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} 
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
