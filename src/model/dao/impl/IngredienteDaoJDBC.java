@@ -70,9 +70,33 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 	}
 
 	@Override
-	public Ingrediente findById(Integer id_MP_Receita) {
-		// TODO Auto-generated method stub
-		return null;
+	public Ingrediente findById(Integer id_MP_Receita_PK) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM calculo_receita.ingrediente WHERE id_MP_Receita_PK =?");
+
+			st.setInt(1, id_MP_Receita_PK);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Ingrediente ingrediente = new Ingrediente();
+				ingrediente.setId_MP_Receita_PK(rs.getInt("id_MP_Receita_PK"));
+				/*ingrediente.getMP().setId(rs.getInt("idMP"));
+				ingrediente.getReceita().setIdReceita(rs.getInt("idReceita"));*/
+				ingrediente.setCustoMP(rs.getDouble("custoMP"));
+				ingrediente.setQtIngrediente(rs.getDouble("qtIngrediente"));
+				ingrediente.setCustoIngrediente(rs.getDouble("custoIngrediente"));
+				ingrediente.setPorcenIngrediente(rs.getDouble("porcenIngrediente"));
+				
+				return ingrediente;
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	@Override

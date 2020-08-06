@@ -65,8 +65,7 @@ public class Main extends Application {
 		
 		System.out.println(receitaDao.findById(1));
 		
-		ingredienteDao.insert(ingrediente1);
-		ingredienteDao.insert(ingrediente2);
+		System.out.println(ingredienteDao.findById(1));
 		
 	}
 }
