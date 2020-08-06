@@ -79,8 +79,33 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 
 	@Override
 	public Receita findById(Integer idReceita) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM calculo_receita.receita WHERE idReceita =?");
+
+			st.setInt(1, idReceita);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Receita receita = new Receita();
+				receita.setIdReceita(rs.getInt("idReceita"));
+				receita.setDescricaoReceita(rs.getString("descricaoReceita"));
+				receita.setRendLiqReceita(rs.getDouble("rendLiqReceita"));
+				receita.setGramaturaReceita(rs.getDouble("gramaturaReceita"));
+				receita.setRendBrutoReceita();
+				receita.setPerdaReceita();
+				receita.setCustoReceita();
+				receita.setPorcenIngrediente();
+				
+				return receita;
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	@Override
