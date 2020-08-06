@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.dao.DaoFactory;
+import model.dao.IngredienteDao;
 import model.dao.MPDao;
 import model.dao.ReceitaDao;
 import model.entities.Ingrediente;
@@ -33,19 +34,14 @@ public class Main extends Application {
 		
 		ReceitaDao receitaDao = DaoFactory.createReceitaDao();
 		
+		IngredienteDao ingredienteDao = DaoFactory.createIngredienteDao();
+		
 		MP mp1 = mpDao.findByCodigo("800001");
 		MP mp2 = mpDao.findByCodigo("800005");
 		MP mp3 = mpDao.findByCodigo("800002");
 		MP mp4 = mpDao.findByCodigo("800010");
 		MP mp5 = mpDao.findByCodigo("800011");
 		MP mp6 = mpDao.findByCodigo("800015");
-		
-		System.out.println(mp1);
-		System.out.println(mp2);
-		System.out.println(mp3);
-		System.out.println(mp4);
-		System.out.println(mp5);
-		System.out.println(mp6);
 		
 		Receita receita1 = new Receita(1, "Massa de Batata", 30.0, 15.0);
 		Receita receita2 = new Receita(2, "Recheio de Carne", 10.0, 3.0);
@@ -67,9 +63,10 @@ public class Main extends Application {
 		receita3.addIngrediente(ingrediente5);
 		receita3.addIngrediente(ingrediente6);
 		
-		receita1.setDescricaoReceita("Massa de Mandioca");
+		System.out.println(receitaDao.findById(1));
 		
-		receitaDao.update(receita1);
+		ingredienteDao.insert(ingrediente1);
+		ingredienteDao.insert(ingrediente2);
 		
 	}
 }
