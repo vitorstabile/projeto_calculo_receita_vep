@@ -9,6 +9,7 @@ public class Ingrediente implements Serializable {
 
 	private IngredientePK id_MP_Receita = new IngredientePK();;
 
+	private Integer id_MP_Receita_PK;
 	private Double custoMP;
 	private Double qtIngrediente;
 	private Double custoIngrediente;
@@ -40,6 +41,15 @@ public class Ingrediente implements Serializable {
 
 	public void setReceita(Receita receita) {
 		id_MP_Receita.setReceita(receita);
+	}
+	
+
+	public Integer getId_MP_Receita_PK() {
+		return id_MP_Receita_PK;
+	}
+
+	public void setId_MP_Receita_PK(Integer id_MP_Receita_PK) {
+		this.id_MP_Receita_PK = id_MP_Receita_PK;
 	}
 
 	public Double getCustoMP() {
