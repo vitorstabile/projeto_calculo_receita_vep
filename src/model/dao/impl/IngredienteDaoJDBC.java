@@ -109,6 +109,7 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 				receita.setIdReceita(rs.getInt("id da Receita"));
 				receita.setDescricaoReceita(rs.getString("Descriçao Receita"));
 				receita.setRendLiqReceita(rs.getDouble("Rendimento Liquido"));
+				receita.setGramaturaReceita(rs.getDouble("Gramatura"));
 				ingrediente.setMP(mp);
 				ingrediente.setReceita(receita);
 				ingrediente.setId_MP_Receita_PK(rs.getInt("id Ingrediente"));

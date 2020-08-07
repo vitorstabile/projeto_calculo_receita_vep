@@ -40,5 +40,7 @@ public class Main extends Application {
 		
 		System.out.println(ingredienteDao.findById(1));
 		
+		System.out.println(ingredienteDao.findById(1).getReceita());
+		
 	}
 }
