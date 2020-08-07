@@ -11,6 +11,8 @@ import db.DB;
 import db.DbException;
 import model.dao.IngredienteDao;
 import model.entities.Ingrediente;
+import model.entities.MP;
+import model.entities.Receita;
 
 public class IngredienteDaoJDBC implements IngredienteDao {
 	
@@ -74,20 +76,47 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT * FROM calculo_receita.ingrediente WHERE id_MP_Receita_PK =?");
+			st = conn.prepareStatement("SELECT calculo_receita.mp.idMP AS 'id MP', "
+					+ "calculo_receita.mp.codigoMP AS 'Código MP', "
+					+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
+					+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual', "
+					+ "calculo_receita.receita.idReceita AS 'id da Receita', "
+					+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
+					+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
+					+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura', "
+					+ "calculo_receita.ingrediente.id_MP_Receita_PK AS 'id Ingrediente', "
+					+ "calculo_receita.ingrediente.custoMP AS 'Custo da MP no Ingrediente', "
+					+ "calculo_receita.ingrediente.qtIngrediente AS 'Quantidade', "
+					+ "calculo_receita.ingrediente.custoIngrediente AS 'Custo do Ingrediente', "
+					+ "calculo_receita.ingrediente.porcenIngrediente AS 'Porcentagem' "
+					+ "FROM calculo_receita.ingrediente "
+					+ "INNER JOIN calculo_receita.MP "
+					+ "ON calculo_receita.ingrediente.idMP = calculo_receita.mp.idMP "
+					+ "INNER JOIN calculo_receita.receita "
+					+ "ON calculo_receita.ingrediente.idReceita = calculo_receita.receita.idReceita "
+					+ "WHERE calculo_receita.ingrediente.id_MP_Receita_PK = ?;");
 
 			st.setInt(1, id_MP_Receita_PK);
 			rs = st.executeQuery();
 			if (rs.next()) {
 				Ingrediente ingrediente = new Ingrediente();
-				ingrediente.setId_MP_Receita_PK(rs.getInt("id_MP_Receita_PK"));
-				/*ingrediente.getMP().setId(rs.getInt("idMP"));
-				ingrediente.getReceita().setIdReceita(rs.getInt("idReceita"));*/
-				ingrediente.setCustoMP(rs.getDouble("custoMP"));
-				ingrediente.setQtIngrediente(rs.getDouble("qtIngrediente"));
-				ingrediente.setCustoIngrediente(rs.getDouble("custoIngrediente"));
-				ingrediente.setPorcenIngrediente(rs.getDouble("porcenIngrediente"));
-				
+				MP mp = new MP();
+				Receita receita = new Receita();
+				mp.setId(rs.getInt("id MP"));
+				mp.setCodigoMP(rs.getString("Código MP"));
+				mp.setDescricaoMP(rs.getString("Descrição MP"));
+				mp.setCustoMP(rs.getDouble("Custo da MP Atual"));
+				receita.setIdReceita(rs.getInt("id da Receita"));
+				receita.setDescricaoReceita(rs.getString("Descriçao Receita"));
+				receita.setRendLiqReceita(rs.getDouble("Rendimento Liquido"));
+				ingrediente.setMP(mp);
+				ingrediente.setReceita(receita);
+				ingrediente.setId_MP_Receita_PK(rs.getInt("id Ingrediente"));
+				ingrediente.setCustoMP(rs.getDouble("Custo da MP no Ingrediente"));
+				ingrediente.setQtIngrediente(rs.getDouble("Quantidade"));
+				ingrediente.setCustoIngrediente(rs.getDouble("Custo do Ingrediente"));
+				ingrediente.setPorcenIngrediente(rs.getDouble("Porcentagem"));
+				receita.addIngrediente(ingrediente);
 				return ingrediente;
 			}
 			return null;

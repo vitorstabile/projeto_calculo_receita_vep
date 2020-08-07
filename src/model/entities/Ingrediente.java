@@ -18,7 +18,8 @@ public class Ingrediente implements Serializable {
 	public Ingrediente() {
 	}
 
-	public Ingrediente(MP mp, Receita receita, Double custoMP, Double qtIngrediente) {
+	public Ingrediente(Integer id_MP_Receita_PK ,MP mp, Receita receita, Double qtIngrediente) {
+		this.id_MP_Receita_PK = id_MP_Receita_PK;
 		id_MP_Receita.setMp(mp);
 		id_MP_Receita.setReceita(receita);
 		this.custoMP = mp.getCustoMP();
@@ -111,7 +112,7 @@ public class Ingrediente implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Ingrediente [id_MP_Receita=" + id_MP_Receita + ", custoMP=" + custoMP + ", qtIngrediente="
+		return "Ingrediente [id_MP_Receita_PK=" + id_MP_Receita_PK + ", custoMP=" + custoMP + ", qtIngrediente="
 				+ qtIngrediente + ", custoIngrediente=" + custoIngrediente + ", porcenIngrediente=" + porcenIngrediente
 				+ "]";
 	}
