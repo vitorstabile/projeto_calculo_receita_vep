@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -14,9 +17,9 @@ import model.entities.MP;
 import model.entities.Receita;
 
 public class ReceitaDaoJDBC implements ReceitaDao {
-	
+
 	private Connection conn;
-	
+
 	public ReceitaDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -25,10 +28,11 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 	public void insert(Receita obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-					"INSERT INTO calculo_receita.receita " + "(descricaoReceita, rendLiqReceita, gramaturaReceita) " 
-					+ "VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
+			st = conn
+					.prepareStatement(
+							"INSERT INTO calculo_receita.receita "
+									+ "(descricaoReceita, rendLiqReceita, gramaturaReceita) " + "VALUES (?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getDescricaoReceita());
 			st.setDouble(2, obj.getRendLiqReceita());
@@ -51,17 +55,15 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 		} finally {
 			DB.closeStatement(st);
 		}
-		
+
 	}
 
 	@Override
 	public void update(Receita obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("UPDATE calculo_receita.receita " 
-					+ "SET "
-					+ "descricaoReceita = ?, rendLiqReceita=?, gramaturaReceita=? " 
-					+ "WHERE idReceita = ?");
+			st = conn.prepareStatement("UPDATE calculo_receita.receita " + "SET "
+					+ "descricaoReceita = ?, rendLiqReceita=?, gramaturaReceita=? " + "WHERE idReceita = ?");
 
 			st.setString(1, obj.getDescricaoReceita());
 			st.setDouble(2, obj.getRendLiqReceita());
@@ -77,11 +79,10 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		} 
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
-		
+
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 		} finally {
 			DB.closeStatement(st);
 		}
-		
+
 	}
 
 	@Override
@@ -120,7 +121,7 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 				receita.setPerdaReceita();
 				receita.setCustoReceita();
 				receita.setPorcenIngrediente();
-				
+
 				return receita;
 			}
 			return null;
@@ -139,9 +140,69 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 	}
 
 	@Override
-	public List<Receita> findByMP(MP mp) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Receita> findByMP(MP materiaPrima) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT calculo_receita.mp.idMP AS 'id MP', " + "calculo_receita.mp.codigoMP AS 'Código MP', "
+							+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
+							+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual', "
+							+ "calculo_receita.receita.idReceita AS 'id da Receita', "
+							+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
+							+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
+							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura' "
+							+ "FROM calculo_receita.ingrediente " + "INNER JOIN calculo_receita.MP "
+							+ "ON calculo_receita.ingrediente.idMP = calculo_receita.mp.idMP "
+							+ "INNER JOIN calculo_receita.receita "
+							+ "ON calculo_receita.ingrediente.idReceita = calculo_receita.receita.idReceita "
+							+ "WHERE calculo_receita.mp.idMP = ? " + "ORDER BY calculo_receita.mp.descricaoMP;");
+
+			st.setInt(1, materiaPrima.getId());
+
+			rs = st.executeQuery();
+
+			List<Receita> list = new ArrayList<>();
+			Map<Integer, MP> map = new HashMap<>();
+
+			while (rs.next()) {
+
+				MP mp = new MP();
+
+				mp = map.get(rs.getInt("id MP"));
+
+				if (mp == null) {
+					mp = instantiateMP(rs);
+					map.put(rs.getInt("id MP"), mp);
+				}
+				Receita receita = instantiateReceita(rs);
+				list.add(receita);
+			}
+			return list;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	private MP instantiateMP(ResultSet rs) throws SQLException {
+		MP mp = new MP();
+		mp.setId(rs.getInt("id MP"));
+		mp.setCodigoMP(rs.getString("Código MP"));
+		mp.setDescricaoMP(rs.getString("Descrição MP"));
+		mp.setCustoMP(rs.getDouble("Custo da MP Atual"));
+		return mp;
+	}
+	
+	private Receita instantiateReceita(ResultSet rs) throws SQLException {
+		Receita receita = new Receita();
+		receita.setIdReceita(rs.getInt("id da Receita"));
+		receita.setDescricaoReceita(rs.getString("Descriçao Receita"));
+		receita.setRendLiqReceita(rs.getDouble("Rendimento Liquido"));
+		receita.setGramaturaReceita(rs.getDouble("Gramatura"));
+		return receita;
 	}
 
 }
