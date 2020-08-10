@@ -1,14 +1,13 @@
 package application;
 
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.dao.DaoFactory;
+import model.dao.IngredienteDao;
 import model.dao.MPDao;
-import model.entities.MP;
+import model.dao.ReceitaDao;
 
 public class Main extends Application {
 	@Override
@@ -30,10 +29,15 @@ public class Main extends Application {
 		
 		MPDao mpDao = DaoFactory.createMPDao();
 		
-		List<MP> list = mpDao.findAll();
-		for(MP obj : list) {
-			System.out.println(obj);
-		}
+		ReceitaDao receitaDao = DaoFactory.createReceitaDao();
+		
+		IngredienteDao ingredienteDao = DaoFactory.createIngredienteDao();
+		
+		System.out.println(mpDao.findByCodigo("800001"));
+		
+		System.out.println(receitaDao.findById(1));
+		
+		System.out.println(ingredienteDao.findById(1));
 		
 	}
 }

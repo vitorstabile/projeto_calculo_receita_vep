@@ -28,10 +28,10 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 	public void insert(Receita obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn
-					.prepareStatement(
+			st = conn.prepareStatement(
 							"INSERT INTO calculo_receita.receita "
-									+ "(descricaoReceita, rendLiqReceita, gramaturaReceita) " + "VALUES (?, ?, ?)",
+							+ "(descricaoReceita, rendLiqReceita, gramaturaReceita) " 
+							+ "VALUES (?, ?, ?)",
 							Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getDescricaoReceita());
@@ -62,8 +62,11 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 	public void update(Receita obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("UPDATE calculo_receita.receita " + "SET "
-					+ "descricaoReceita = ?, rendLiqReceita=?, gramaturaReceita=? " + "WHERE idReceita = ?");
+			st = conn.prepareStatement(
+							"UPDATE calculo_receita.receita " 
+							+ "SET "
+							+ "descricaoReceita = ?, rendLiqReceita=?, gramaturaReceita=? " 
+							+ "WHERE idReceita = ?");
 
 			st.setString(1, obj.getDescricaoReceita());
 			st.setDouble(2, obj.getRendLiqReceita());
@@ -107,20 +110,18 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT * FROM calculo_receita.receita WHERE idReceita =?");
+			st = conn.prepareStatement(
+							"SELECT calculo_receita.receita.idReceita AS 'id da Receita', "
+							+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
+							+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
+							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura' "
+							+ "FROM calculo_receita.receita "
+							+ "WHERE calculo_receita.receita.idReceita =?");
 
 			st.setInt(1, idReceita);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Receita receita = new Receita();
-				receita.setIdReceita(rs.getInt("idReceita"));
-				receita.setDescricaoReceita(rs.getString("descricaoReceita"));
-				receita.setRendLiqReceita(rs.getDouble("rendLiqReceita"));
-				receita.setGramaturaReceita(rs.getDouble("gramaturaReceita"));
-				receita.setRendBrutoReceita();
-				receita.setPerdaReceita();
-				receita.setCustoReceita();
-				receita.setPorcenIngrediente();
+				Receita receita = instantiateReceita(rs);
 
 				return receita;
 			}
@@ -145,18 +146,21 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT calculo_receita.mp.idMP AS 'id MP', " + "calculo_receita.mp.codigoMP AS 'Código MP', "
+							"SELECT calculo_receita.mp.idMP AS 'id MP', " 
+							+ "calculo_receita.mp.codigoMP AS 'Código MP', "
 							+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
 							+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual', "
 							+ "calculo_receita.receita.idReceita AS 'id da Receita', "
 							+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
 							+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
 							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura' "
-							+ "FROM calculo_receita.ingrediente " + "INNER JOIN calculo_receita.MP "
+							+ "FROM calculo_receita.ingrediente " 
+							+ "INNER JOIN calculo_receita.MP "
 							+ "ON calculo_receita.ingrediente.idMP = calculo_receita.mp.idMP "
 							+ "INNER JOIN calculo_receita.receita "
 							+ "ON calculo_receita.ingrediente.idReceita = calculo_receita.receita.idReceita "
-							+ "WHERE calculo_receita.mp.idMP = ? " + "ORDER BY calculo_receita.mp.descricaoMP;");
+							+ "WHERE calculo_receita.mp.idMP = ? " 
+							+ "ORDER BY calculo_receita.mp.descricaoMP;");
 
 			st.setInt(1, materiaPrima.getId());
 
@@ -202,6 +206,10 @@ public class ReceitaDaoJDBC implements ReceitaDao {
 		receita.setDescricaoReceita(rs.getString("Descriçao Receita"));
 		receita.setRendLiqReceita(rs.getDouble("Rendimento Liquido"));
 		receita.setGramaturaReceita(rs.getDouble("Gramatura"));
+		receita.setRendBrutoReceita();
+		receita.setPerdaReceita();
+		receita.setCustoReceita();
+		receita.setPorcenIngrediente();
 		return receita;
 	}
 

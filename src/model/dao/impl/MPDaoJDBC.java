@@ -29,8 +29,10 @@ public class MPDaoJDBC implements MPDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO calculo_receita.mp " + "(codigoMP, descricaoMP, custoMP) " + "VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
+							"INSERT INTO calculo_receita.mp " 
+							+ "(codigoMP, descricaoMP, custoMP) " 
+							+ "VALUES (?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getCodigoMP());
 			st.setString(2, obj.getDescricaoMP());
@@ -59,10 +61,11 @@ public class MPDaoJDBC implements MPDao {
 	public void update(MP obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("UPDATE calculo_receita.mp " 
-					+ "SET "
-					+ "codigoMP = ?, descricaoMP=?, custoMP=? " 
-					+ "WHERE idMP = ?");
+			st = conn.prepareStatement(
+							"UPDATE calculo_receita.mp " 
+							+ "SET "
+							+ "codigoMP = ?, descricaoMP=?, custoMP=? " 
+							+ "WHERE idMP = ?");
 
 			st.setString(1, obj.getCodigoMP());
 			st.setString(2, obj.getDescricaoMP());
@@ -102,16 +105,18 @@ public class MPDaoJDBC implements MPDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT * FROM calculo_receita.mp WHERE codigoMP =?");
-
+			st = conn.prepareStatement(
+							"SELECT calculo_receita.mp.idMP AS 'id MP', " 
+							+ "calculo_receita.mp.codigoMP AS 'Código MP', "
+							+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
+							+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual' "
+							+ "FROM calculo_receita.mp "
+							+ "WHERE calculo_receita.mp.codigoMP = ?");
+					
 			st.setString(1, codigoMP);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				MP mp = new MP();
-				mp.setId(rs.getInt("idMP"));
-				mp.setCodigoMP(rs.getString("codigoMP"));
-				mp.setDescricaoMP(rs.getString("descricaoMP"));
-				mp.setCustoMP(rs.getDouble("custoMP"));
+				MP mp = instantiateMP(rs);
 				return mp;
 			}
 			return null;
@@ -153,9 +158,6 @@ public class MPDaoJDBC implements MPDao {
 			DB.closeResultSet(rs);
 		}
 		
-		
-		
-		
 	}
 
 	@Override
@@ -164,18 +166,21 @@ public class MPDaoJDBC implements MPDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT calculo_receita.mp.idMP AS 'id MP', " + "calculo_receita.mp.codigoMP AS 'Código MP', "
+							"SELECT calculo_receita.mp.idMP AS 'id MP', " 
+							+ "calculo_receita.mp.codigoMP AS 'Código MP', "
 							+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
 							+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual', "
 							+ "calculo_receita.receita.idReceita AS 'id da Receita', "
 							+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
 							+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
 							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura' "
-							+ "FROM calculo_receita.ingrediente " + "INNER JOIN calculo_receita.MP "
+							+ "FROM calculo_receita.ingrediente " 
+							+ "INNER JOIN calculo_receita.MP "
 							+ "ON calculo_receita.ingrediente.idMP = calculo_receita.mp.idMP "
 							+ "INNER JOIN calculo_receita.receita "
 							+ "ON calculo_receita.ingrediente.idReceita = calculo_receita.receita.idReceita "
-							+ "WHERE calculo_receita.receita.idReceita = ? " + "ORDER BY calculo_receita.mp.descricaoMP;");
+							+ "WHERE calculo_receita.receita.idReceita = ? " 
+							+ "ORDER BY calculo_receita.mp.descricaoMP;");
 
 			st.setInt(1, receita.getIdReceita());
 
@@ -221,8 +226,11 @@ public class MPDaoJDBC implements MPDao {
 		receita.setDescricaoReceita(rs.getString("Descriçao Receita"));
 		receita.setRendLiqReceita(rs.getDouble("Rendimento Liquido"));
 		receita.setGramaturaReceita(rs.getDouble("Gramatura"));
+		receita.setRendBrutoReceita();
+		receita.setPerdaReceita();
+		receita.setCustoReceita();
+		receita.setPorcenIngrediente();
 		return receita;
 	}
 	
-
 }
