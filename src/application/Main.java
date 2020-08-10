@@ -8,7 +8,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.dao.DaoFactory;
 import model.dao.MPDao;
-import model.dao.ReceitaDao;
 import model.entities.MP;
 import model.entities.Receita;
 
@@ -32,14 +31,12 @@ public class Main extends Application {
 		
 		MPDao mpDao = DaoFactory.createMPDao();
 		
-		ReceitaDao receitaDao = DaoFactory.createReceitaDao();
+		Receita receita = new Receita();
 		
-		MP mp = new MP();
+		receita.setIdReceita(1);
 		
-		mp = mpDao.findByCodigo("800005");
-		
-		List<Receita> list = receitaDao.findByMP(mp);
-		for(Receita obj : list) {
+		List<MP> list = mpDao.findByReceita(receita);
+		for(MP obj : list) {
 			System.out.println(obj);
 		}
 		
