@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import model.dao.DaoFactory;
 import model.dao.MPDao;
 import model.entities.MP;
-import model.entities.Receita;
 
 public class Main extends Application {
 	@Override
@@ -31,11 +30,7 @@ public class Main extends Application {
 		
 		MPDao mpDao = DaoFactory.createMPDao();
 		
-		Receita receita = new Receita();
-		
-		receita.setIdReceita(1);
-		
-		List<MP> list = mpDao.findByReceita(receita);
+		List<MP> list = mpDao.findAll();
 		for(MP obj : list) {
 			System.out.println(obj);
 		}

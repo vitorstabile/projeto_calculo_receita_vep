@@ -125,8 +125,37 @@ public class MPDaoJDBC implements MPDao {
 
 	@Override
 	public List<MP> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+							"SELECT calculo_receita.mp.idMP AS 'id MP', " 
+							+ "calculo_receita.mp.codigoMP AS 'Código MP', "
+							+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
+							+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual' "
+							+ "FROM calculo_receita.mp "
+							+ "ORDER BY calculo_receita.mp.codigoMP;");
+
+			rs = st.executeQuery();
+
+			List<MP> list = new ArrayList<>();
+
+			while (rs.next()) {
+				
+				MP mp = instantiateMP(rs);
+				list.add(mp);
+			}
+			return list;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
+		
+		
+		
 	}
 
 	@Override
