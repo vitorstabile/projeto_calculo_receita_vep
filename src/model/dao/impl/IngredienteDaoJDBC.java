@@ -84,8 +84,20 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 	}
 
 	@Override
-	public void deleteById(Integer id_MP_Receita) {
-		// TODO Auto-generated method stub
+	public void deleteById(Integer id_MP_Receita_PK) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM calculo_receita.ingrediente WHERE id_MP_Receita_PK = ?");
+
+			st.setInt(1, id_MP_Receita_PK);
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+
 
 	}
 

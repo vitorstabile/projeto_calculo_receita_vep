@@ -65,11 +65,7 @@ public class Main extends Application {
 		receitaService.updateReceitaAdd(receita1, ingrediente5);
 		receitaService.updateReceitaAdd(receita1, ingrediente6);
 		
-		Ingrediente ingrediente = ingredienteDao.findById(4);
-		
-		ingrediente.setCustoMP(100.0);
-		
-		ingredienteDao.update(ingrediente);
+		ingredienteDao.deleteById(4);
 		
 	}
 }
