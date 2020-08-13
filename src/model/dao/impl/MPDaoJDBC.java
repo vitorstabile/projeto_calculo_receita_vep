@@ -173,7 +173,10 @@ public class MPDaoJDBC implements MPDao {
 							+ "calculo_receita.receita.idReceita AS 'id da Receita', "
 							+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
 							+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
-							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura' "
+							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura', "
+							+ "calculo_receita.receita.rendBrutoReceita AS 'Rendimento Bruto Receita', "
+							+ "calculo_receita.receita.perdaReceita AS 'Perda Receita', "
+							+ "calculo_receita.receita.custoReceita AS 'Custo Receita' "
 							+ "FROM calculo_receita.ingrediente " 
 							+ "INNER JOIN calculo_receita.MP "
 							+ "ON calculo_receita.ingrediente.idMP = calculo_receita.mp.idMP "
@@ -226,10 +229,9 @@ public class MPDaoJDBC implements MPDao {
 		receita.setDescricaoReceita(rs.getString("Descriçao Receita"));
 		receita.setRendLiqReceita(rs.getDouble("Rendimento Liquido"));
 		receita.setGramaturaReceita(rs.getDouble("Gramatura"));
-		receita.setRendBrutoReceita();
-		receita.setPerdaReceita();
-		receita.setCustoReceita();
-		receita.setPorcenIngrediente();
+		receita.setRendBrutoReceita(rs.getDouble("Rendimento Bruto Receita"));
+		receita.setPerdaReceita(rs.getDouble("Perda Receita"));
+		receita.setCustoReceita(rs.getDouble("Custo Receita"));
 		return receita;
 	}
 	

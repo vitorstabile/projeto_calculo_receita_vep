@@ -65,59 +65,37 @@ public class Receita implements Serializable {
 	public Double getRendBrutoReceita() {
 		return rendBrutoReceita;
 	}
+	
+	public void setRendBrutoReceita(Double rendBrutoReceita) {
+		this.rendBrutoReceita = rendBrutoReceita;
+	}
 
 	public Double getPerdaReceita() {
 		return perdaReceita;
+	}
+
+	public void setPerdaReceita(Double perdaReceita) {
+		this.perdaReceita = perdaReceita;
 	}
 
 	public Double getCustoReceita() {
 		return custoReceita;
 	}
 
+	public void setCustoReceita(Double custoReceita) {
+		this.custoReceita = custoReceita;
+	}
+	
+	public List<Ingrediente> getIngredientes() {
+		return ingredientes;
+	}
+
 	public void addIngrediente(Ingrediente ingrediente) {
 		this.ingredientes.add(ingrediente);
-		setRendBrutoReceita();
-		setPerdaReceita();
-		setCustoReceita();
-		setPorcenIngrediente();
 	}
 
 	public void removeIngrediente(Ingrediente ingrediente) {
 		this.ingredientes.remove(ingrediente);
-		setRendBrutoReceita();
-		setPerdaReceita();
-		setCustoReceita();
-		setPorcenIngrediente();
-	}
-
-	public void setRendBrutoReceita() {
-
-		double soma = 0;
-
-		for (Ingrediente ingrediente : ingredientes) {
-			soma = soma + ingrediente.getQtIngrediente();
-		}
-		this.rendBrutoReceita = soma;
-	}
-
-	public void setPerdaReceita() {
-		this.perdaReceita = ((this.rendBrutoReceita - this.rendLiqReceita) / (this.rendBrutoReceita)) * 100;
-	}
-
-	public void setCustoReceita() {
-		double soma = 0;
-
-		for (Ingrediente ingrediente : ingredientes) {
-			soma = soma + ingrediente.getCustoIngrediente();
-		}
-		this.custoReceita = soma / this.rendLiqReceita;
-	}
-
-	public void setPorcenIngrediente() {
-
-		for (Ingrediente ingrediente : ingredientes) {
-			ingrediente.setPorcenIngrediente((ingrediente.getQtIngrediente()/this.rendBrutoReceita)*100);
-		}
 	}
 
 	@Override

@@ -86,6 +86,9 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 							+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
 							+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
 							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura', "
+							+ "calculo_receita.receita.rendBrutoReceita AS 'Rendimento Bruto Receita', "
+							+ "calculo_receita.receita.perdaReceita AS 'Perda Receita', "
+							+ "calculo_receita.receita.custoReceita AS 'Custo Receita', "
 							+ "calculo_receita.ingrediente.id_MP_Receita_PK AS 'id Ingrediente', "
 							+ "calculo_receita.ingrediente.custoMP AS 'Custo da MP no Ingrediente', "
 							+ "calculo_receita.ingrediente.qtIngrediente AS 'Quantidade', "
@@ -136,10 +139,9 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 		receita.setDescricaoReceita(rs.getString("Descriçao Receita"));
 		receita.setRendLiqReceita(rs.getDouble("Rendimento Liquido"));
 		receita.setGramaturaReceita(rs.getDouble("Gramatura"));
-		receita.setRendBrutoReceita();
-		receita.setPerdaReceita();
-		receita.setCustoReceita();
-		receita.setPorcenIngrediente();
+		receita.setRendBrutoReceita(rs.getDouble("Rendimento Bruto Receita"));
+		receita.setPerdaReceita(rs.getDouble("Perda Receita"));
+		receita.setCustoReceita(rs.getDouble("Custo Receita"));
 		return receita;
 	}
 	

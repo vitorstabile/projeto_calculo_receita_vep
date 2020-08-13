@@ -7,7 +7,7 @@ import model.entities.pk.IngredientePK;
 public class Ingrediente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private IngredientePK id_MP_Receita = new IngredientePK();;
+	private IngredientePK id_MP_Receita = new IngredientePK();
 
 	private Integer id_MP_Receita_PK;
 	private Double custoMP;
@@ -44,7 +44,6 @@ public class Ingrediente implements Serializable {
 		id_MP_Receita.setReceita(receita);
 	}
 	
-
 	public Integer getId_MP_Receita_PK() {
 		return id_MP_Receita_PK;
 	}
