@@ -82,6 +82,7 @@ public class Ingrediente implements Serializable {
 
 	public void setPorcenIngrediente(Double porcenIngrediente) {
 		this.porcenIngrediente = porcenIngrediente;
+		this.getMP().getCodigoMP();
 	}
 
 	@Override
@@ -111,7 +112,8 @@ public class Ingrediente implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Ingrediente [id_MP_Receita_PK=" + id_MP_Receita_PK + ", custoMP=" + custoMP + ", qtIngrediente="
+		return "Ingrediente [id_MP_Receita_PK=" + id_MP_Receita_PK + ", id_MP=" + this.getMP().getId() + ", id_Receita=" + this.getReceita().getIdReceita()
+				+ ", custoMP=" + custoMP + ", qtIngrediente="
 				+ qtIngrediente + ", custoIngrediente=" + custoIngrediente + ", porcenIngrediente=" + porcenIngrediente
 				+ "]";
 	}

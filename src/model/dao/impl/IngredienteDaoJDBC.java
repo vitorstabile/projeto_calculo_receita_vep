@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -98,7 +99,6 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 			DB.closeStatement(st);
 		}
 
-
 	}
 
 	@Override
@@ -147,8 +147,48 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 
 	@Override
 	public List<Ingrediente> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT calculo_receita.mp.idMP AS 'id MP', " + "calculo_receita.mp.codigoMP AS 'Código MP', "
+							+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
+							+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual', "
+							+ "calculo_receita.receita.idReceita AS 'id da Receita', "
+							+ "calculo_receita.receita.descricaoReceita AS 'Descriçao Receita', "
+							+ "calculo_receita.receita.rendLiqReceita AS 'Rendimento Liquido', "
+							+ "calculo_receita.receita.gramaturaReceita AS 'Gramatura', "
+							+ "calculo_receita.receita.rendBrutoReceita AS 'Rendimento Bruto Receita', "
+							+ "calculo_receita.receita.perdaReceita AS 'Perda Receita', "
+							+ "calculo_receita.receita.custoReceita AS 'Custo Receita', "
+							+ "calculo_receita.ingrediente.id_MP_Receita_PK AS 'id Ingrediente', "
+							+ "calculo_receita.ingrediente.custoMP AS 'Custo da MP no Ingrediente', "
+							+ "calculo_receita.ingrediente.qtIngrediente AS 'Quantidade', "
+							+ "calculo_receita.ingrediente.custoIngrediente AS 'Custo do Ingrediente', "
+							+ "calculo_receita.ingrediente.porcenIngrediente AS 'Porcentagem' "
+							+ "FROM calculo_receita.ingrediente " + "INNER JOIN calculo_receita.MP "
+							+ "ON calculo_receita.ingrediente.idMP = calculo_receita.mp.idMP "
+							+ "INNER JOIN calculo_receita.receita "
+							+ "ON calculo_receita.ingrediente.idReceita = calculo_receita.receita.idReceita ");
+
+			rs = st.executeQuery();
+
+			List<Ingrediente> listIngrediente = new ArrayList<>();
+
+			while (rs.next()) {
+
+				MP mp = instantiateMP(rs);
+				Receita receita = instantiateReceita(rs);
+				Ingrediente ingrediente = instantiateIngrediente(rs, mp, receita);
+				listIngrediente.add(ingrediente);
+			}
+			return listIngrediente;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	private MP instantiateMP(ResultSet rs) throws SQLException {
