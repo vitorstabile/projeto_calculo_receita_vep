@@ -15,10 +15,9 @@ import model.entities.MP;
 import model.entities.Receita;
 
 public class IngredienteDaoJDBC implements IngredienteDao {
-	
-	
+
 	private Connection conn;
-	
+
 	public IngredienteDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -27,11 +26,9 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 	public void insert(Ingrediente obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-							"INSERT INTO calculo_receita.ingrediente " 
-							+ "(idMP, idReceita, custoMP, qtIngrediente, custoIngrediente, porcenIngrediente) " 
-							+ "VALUES (?, ?, ?, ?, ?, ?)",
-							Statement.RETURN_GENERATED_KEYS);
+			st = conn.prepareStatement("INSERT INTO calculo_receita.ingrediente "
+					+ "(idMP, idReceita, custoMP, qtIngrediente, custoIngrediente, porcenIngrediente) "
+					+ "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
 			st.setInt(1, obj.getMP().getId());
 			st.setInt(2, obj.getReceita().getIdReceita());
@@ -46,7 +43,8 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
-					obj.setId_MP_Receita_PK(id);;
+					obj.setId_MP_Receita_PK(id);
+					;
 				}
 				DB.closeResultSet(rs);
 			} else {
@@ -57,19 +55,38 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 		} finally {
 			DB.closeStatement(st);
 		}
-		
+
 	}
 
 	@Override
 	public void update(Ingrediente obj) {
-		// TODO Auto-generated method stub
-		
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE calculo_receita.ingrediente " + "SET "
+					+ "idMP = ?, idReceita = ?, custoMP = ?, "
+					+ "qtIngrediente = ?, custoIngrediente = ?, porcenIngrediente = ? " + "WHERE id_MP_Receita_PK = ?");
+
+			st.setInt(1, obj.getMP().getId());
+			st.setInt(2, obj.getReceita().getIdReceita());
+			st.setDouble(3, obj.getCustoMP());
+			st.setDouble(4, obj.getQtIngrediente());
+			st.setDouble(5, obj.getCustoIngrediente());
+			st.setDouble(6, obj.getPorcenIngrediente());
+			st.setDouble(7, obj.getId_MP_Receita_PK());
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+
 	}
 
 	@Override
 	public void deleteById(Integer id_MP_Receita) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -78,8 +95,7 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-							"SELECT calculo_receita.mp.idMP AS 'id MP', "
-							+ "calculo_receita.mp.codigoMP AS 'Código MP', "
+					"SELECT calculo_receita.mp.idMP AS 'id MP', " + "calculo_receita.mp.codigoMP AS 'Código MP', "
 							+ "calculo_receita.mp.descricaoMP AS 'Descrição MP', "
 							+ "calculo_receita.mp.custoMP AS 'Custo da MP Atual', "
 							+ "calculo_receita.receita.idReceita AS 'id da Receita', "
@@ -94,8 +110,7 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 							+ "calculo_receita.ingrediente.qtIngrediente AS 'Quantidade', "
 							+ "calculo_receita.ingrediente.custoIngrediente AS 'Custo do Ingrediente', "
 							+ "calculo_receita.ingrediente.porcenIngrediente AS 'Porcentagem' "
-							+ "FROM calculo_receita.ingrediente "
-							+ "INNER JOIN calculo_receita.MP "
+							+ "FROM calculo_receita.ingrediente " + "INNER JOIN calculo_receita.MP "
 							+ "ON calculo_receita.ingrediente.idMP = calculo_receita.mp.idMP "
 							+ "INNER JOIN calculo_receita.receita "
 							+ "ON calculo_receita.ingrediente.idReceita = calculo_receita.receita.idReceita "
@@ -132,7 +147,7 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 		mp.setCustoMP(rs.getDouble("Custo da MP Atual"));
 		return mp;
 	}
-	
+
 	private Receita instantiateReceita(ResultSet rs) throws SQLException {
 		Receita receita = new Receita();
 		receita.setIdReceita(rs.getInt("id da Receita"));
@@ -144,7 +159,7 @@ public class IngredienteDaoJDBC implements IngredienteDao {
 		receita.setCustoReceita(rs.getDouble("Custo Receita"));
 		return receita;
 	}
-	
+
 	private Ingrediente instantiateIngrediente(ResultSet rs, MP mp, Receita receita) throws SQLException {
 		Ingrediente ingrediente = new Ingrediente();
 		ingrediente.setMP(mp);

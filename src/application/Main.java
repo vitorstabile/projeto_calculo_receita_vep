@@ -65,15 +65,11 @@ public class Main extends Application {
 		receitaService.updateReceitaAdd(receita1, ingrediente5);
 		receitaService.updateReceitaAdd(receita1, ingrediente6);
 		
-		List<Receita> list = new ArrayList<>();
+		Ingrediente ingrediente = ingredienteDao.findById(4);
 		
-		list = receitaDao.findByMP(mp1);
+		ingrediente.setCustoMP(100.0);
 		
-		for (Receita receita: list) {
-			System.out.println(receita);
-		}
-		
-		System.out.println(ingredienteDao.findById(1));
+		ingredienteDao.update(ingrediente);
 		
 	}
 }
