@@ -65,7 +65,7 @@ public class Receita implements Serializable {
 	public Double getRendBrutoReceita() {
 		return rendBrutoReceita;
 	}
-	
+
 	public void setRendBrutoReceita(Double rendBrutoReceita) {
 		this.rendBrutoReceita = rendBrutoReceita;
 	}
@@ -85,17 +85,63 @@ public class Receita implements Serializable {
 	public void setCustoReceita(Double custoReceita) {
 		this.custoReceita = custoReceita;
 	}
-	
+
 	public List<Ingrediente> getIngredientes() {
 		return ingredientes;
 	}
 
 	public void addIngrediente(Ingrediente ingrediente) {
 		this.ingredientes.add(ingrediente);
+		updateRendBrutoReceita();
+		updatePerdaReceita();
+		updateCustoReceita();
+		updatePorcenIngredientes();
 	}
 
 	public void removeIngrediente(Ingrediente ingrediente) {
 		this.ingredientes.remove(ingrediente);
+		updateRendBrutoReceita();
+		updatePerdaReceita();
+		updateCustoReceita();
+		updatePorcenIngredientes();
+	}
+
+	public void updateRendBrutoReceita() {
+
+		double soma = 0;
+
+		for (Ingrediente ingrediente : ingredientes) {
+			soma = soma + ingrediente.getQtIngrediente();
+		}
+		this.setRendBrutoReceita(soma);
+	}
+
+	public void updatePerdaReceita() {
+
+		double perda = ((this.getRendBrutoReceita() - this.getRendLiqReceita()) / (this.getRendBrutoReceita()))* 100;
+
+		this.setPerdaReceita(perda);
+	}
+	
+	public void updateCustoReceita() {
+		
+		double soma = 0;
+
+		for (Ingrediente ingrediente : ingredientes) {
+			soma = soma + ingrediente.getCustoIngrediente();
+		}
+		
+		double custo = soma / this.getRendLiqReceita();
+		
+		this.setCustoReceita(custo);
+		
+	}
+	
+	public void updatePorcenIngredientes() {
+
+		for (Ingrediente ingrediente : ingredientes) {
+			ingrediente.setPorcenIngrediente((ingrediente.getQtIngrediente()/this.getRendBrutoReceita())*100);
+		}
 	}
 
 	@Override
@@ -129,6 +175,6 @@ public class Receita implements Serializable {
 				+ rendLiqReceita + ", gramaturaReceita=" + gramaturaReceita + ", rendBrutoReceita=" + rendBrutoReceita
 				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + ", ingrediente=" + ingredientes
 				+ "]";
-	} 
+	}
 
 }
