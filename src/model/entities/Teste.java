@@ -1,9 +1,11 @@
 package model.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Teste {
+public class Teste implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private Integer idTeste;
 	private String descricaoTeste;

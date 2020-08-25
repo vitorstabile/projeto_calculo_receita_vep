@@ -14,6 +14,8 @@ public class Receita implements Serializable {
 	private Double rendBrutoReceita;
 	private Double perdaReceita;
 	private Double custoReceita;
+	
+	private Teste teste;
 
 	private List<Ingrediente> ingredientes = new ArrayList<>();
 
@@ -28,6 +30,7 @@ public class Receita implements Serializable {
 		this.rendBrutoReceita = null;
 		this.perdaReceita = null;
 		this.custoReceita = null;
+		this.teste = null;
 	}
 
 	public Integer getIdReceita() {
@@ -84,6 +87,14 @@ public class Receita implements Serializable {
 
 	public void setCustoReceita(Double custoReceita) {
 		this.custoReceita = custoReceita;
+	}
+	
+	public Teste getTeste() {
+		return teste;
+	}
+
+	public void setTeste(Teste teste) {
+		this.teste = teste;
 	}
 
 	public List<Ingrediente> getIngredientes() {
@@ -173,7 +184,7 @@ public class Receita implements Serializable {
 	public String toString() {
 		return "Receita [idReceita=" + idReceita + ", descricaoReceita=" + descricaoReceita + ", rendLiqReceita="
 				+ rendLiqReceita + ", gramaturaReceita=" + gramaturaReceita + ", rendBrutoReceita=" + rendBrutoReceita
-				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + ", ingrediente=" + ingredientes
+				+ ", perdaReceita=" + perdaReceita + ", custoReceita=" + custoReceita + ", id_Teste=" + this.getTeste().getIdTeste() + ", ingrediente=" + ingredientes
 				+ "]";
 	}
 
