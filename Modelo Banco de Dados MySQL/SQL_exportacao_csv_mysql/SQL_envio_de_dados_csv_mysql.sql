@@ -1,4 +1,4 @@
-SELECT * FROM calculo_receita.ingrediente 
+SELECT * FROM calculo_receita.mp 
 INTO OUTFILE 'C:\\Temp\\teste.csv'
 FIELDS ENCLOSED BY '"' 
 TERMINATED BY ';' 
